@@ -40,7 +40,7 @@
 	</div>
   <div class="container">
   <div class="row">
-  <p align="left" > Edit Profile</p>
+  <p align="left" > New Profile</p>
   <form><br>
    <div class="form-group ">
     <label for="email">Email:</label>
@@ -78,9 +78,9 @@
       <option>I go to one every weekend.</option>
     </select>
   </div>
-
+<br>
   <div>
-    <label for="Skills">Skills</label> <br>
+    <label for="Skills">Skills</label>
     <table class="table">
     <thead class="thead">
       <tr>
@@ -88,6 +88,7 @@
         <th>Beginner</th>
         <th>Intermediate</th>
         <th>Advanced</th>
+        <th>N/A</th>
       </tr>
     </thead>
     <tbody>
@@ -98,9 +99,11 @@
       <td><label><input type="radio" name="jsradio"></label></td>
       <td><label><input type="radio" name="jsradio"></label></td>
       <td><label><input type="radio" name="jsradio"></label></td>
+      <td><label><input type="radio" name="jsradio"></label></td>
     </tr>
     <tr>
       <th scope="row">Java</th>
+      <td><label><input type="radio" name="jradio"></label></td>
       <td><label><input type="radio" name="jradio"></label></td>
       <td><label><input type="radio" name="jradio"></label></td>
       <td><label><input type="radio" name="jradio"></label></td>
@@ -110,15 +113,19 @@
       <td><label><input type="radio" name="phpradio"></label></td>
       <td><label><input type="radio" name="phpradio"></label></td>
       <td><label><input type="radio" name="phpradio"></label></td>
+      <td><label><input type="radio" name="phpradio"></label></td>
     </tr>
     <tr>
       <th scope="row">Python</th>
       <td><label><input type="radio" name="pradio"></label></td>
       <td><label><input type="radio" name="pradio"></label></td>
       <td><label><input type="radio" name="pradio"></label></td>
+      <td><label><input type="radio" name="pradio"></label></td>
     </tr>
+
     <tr>
       <th scope="row">C/C++</th>
+      <td><label><input type="radio" name="cradio"></label></td>
       <td><label><input type="radio" name="cradio"></label></td>
       <td><label><input type="radio" name="cradio"></label></td>
       <td><label><input type="radio" name="cradio"></label></td>
@@ -128,15 +135,18 @@
       <td><label><input type="radio" name="rubyradio"></label></td>
       <td><label><input type="radio" name="rubyradio"></label></td>
       <td><label><input type="radio" name="rubyradio"></label></td>
+      <td><label><input type="radio" name="rubyradio"></label></td>
     </tr>
     <tr>
       <th scope="row">Swift</th>
       <td><label><input type="radio" name="swiftradio"></label></td>
       <td><label><input type="radio" name="swiftradio"></label></td>
       <td><label><input type="radio" name="swiftradio"></label></td>
+      <td><label><input type="radio" name="swiftradio"></label></td>
     </tr>
     <tr>
       <th scope="row">HTML/CSS</th>
+      <td><label><input type="radio" name="htmlradio"></label></td>
       <td><label><input type="radio" name="htmlradio"></label></td>
       <td><label><input type="radio" name="htmlradio"></label></td>
       <td><label><input type="radio" name="htmlradio"></label></td>
@@ -147,9 +157,13 @@
 </div>
   <label for="Interests">Interests</label> <br>
   <div class="checkbox">
-    <label> <input type="checkbox"> Check me out </label>
-  </div>
-
+    <label> <input type="checkbox">Virtual Reality</label>
+    </div>
+   <div class="checkbox"> <label> <input type="checkbox">Mobile Development</label> </div>
+   <div class="checkbox"> <label> <input type="checkbox">Web Development</label> </div>
+   <div class="checkbox"> <label> <input type="checkbox">IoT</label> </div>
+   <div class="checkbox"> <label> <input type="checkbox">Big Data</label> </div>
+  <br>
   </form>
    <button type="submit" class="btn btn-primary">Submit</button>
 </div>
