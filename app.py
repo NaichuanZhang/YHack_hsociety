@@ -21,13 +21,17 @@ mysql.init_app(app)
 from flask import Flask
 app = Flask(__name__)
 
-@app.route('/')
-def welcome():
-    return render_template('index.html')
 
 app.config.update(
     DEBUG = True,
 )
+
+
+@app.route('/')
+def welcome():
+    return render_template('index.html')
+
+
 
 
 if __name__ == "__main__":
