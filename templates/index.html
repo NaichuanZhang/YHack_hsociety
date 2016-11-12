@@ -33,11 +33,29 @@
   </style>
 
   <body>
+<!--- Header -->
   	<div class="jumbotron text-center">
   		<h1>hacksociety</h1>
   		<p>Hackathon Profile</p> 
   		<a class="btn btn-primary btn-sm" href="#" role="button">Login with Facebook</a>
+  		{% if message %}
+   	 	<h4>{{message}}</h4> {% endif %}
+	    <ul class="nav pull-right">
+	        {% if not session.logged_in %}
+	        <li><a class="btn btn-primary btn-sm" href="/facebook_login"role="button">Login or Signup</a></li>
+	        {% else %}
+	        <li><a class="btn btn-primary btn-sm" href="/logout" role="button">Logout</a></li>
+	    </ul>
 	</div>
+
+   <form class="navbar-form" role="search">
+    <div class="input-group add-on">
+      <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+      <div class="input-group-btn">
+        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+      </div>
+    </div>
+    </form>
 
 <div class="container text-center">
   <div class="row">
@@ -45,7 +63,9 @@
     <div class="col-sm-3">
       <div class="well">
         <p>My Profile</p>
-        <img src="/tree.png" class="img-rounded" height="100" width="100" alt="profilepic">
+        <img src="{{ user_picture_url }}" class="img-rounded" height="100" width="100" alt="profilepic">
+        <h1>{{ user_name }}</h1>
+        {% endif %}
         </div>
         <br>	
 		<div class="well">
