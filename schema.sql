@@ -8,6 +8,7 @@ CREATE TABLE Users(
   education varchar(255),
   year_of_grad int4,
   password varchar(255),
+  pic_url String,
   email varchar(255) UNIQUE NOT NULL,
   CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
@@ -49,6 +50,7 @@ CREATE TABLE G_has_U(
 CREATE TABLE U_has_S(
   s_id int4,
   u_id int4,
+  s_level int4 NOT NULL,
   FOREIGN KEY(u_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY(s_id) REFERENCES Skills(skill_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
