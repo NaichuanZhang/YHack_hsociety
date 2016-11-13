@@ -177,10 +177,16 @@ def login():
     return "<a href='/login'>Try again</a>\
             </br><a href='/register'>or make an account</a>"
 
+
+@app.route('/profile')
+@flask_login.login_required
+def protected():
+    return render_template('index.html')
+
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
-    return render_template('signin.html')
+    return render_template('homepage.html')
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
@@ -236,9 +242,8 @@ def register_skills():
     cursor.execute("SELECT * FROM Skills")
     for x in cursor:
         skillarray.append(x)
-    newcursor = conn.cursor()
-    newcursor.execute("SELECT * FROM Hackathons")
-    for y in newcursor:
+    cursor.execute("SELECT * FROM Hackathons")
+    for y in cursor:
         hackathonarray.append(y)
     if request.method == 'POST':
         uid = getUserIdFromEmail(flask_login.current_user.id)
@@ -247,11 +252,10 @@ def register_skills():
         s_level = request.form.get('radiobutton')[3]
         s_level = int(s_level)
         skill_id = int(skill_id)
-        postcursor = conn.cursor()
         if request.form.get('hackathon_id') != None:
             hackathon_id = int(getHackathon_id(request.form.get('hackathon_id')))
-            postcursor.execute("INSERT INTO H_has_U(u_id, h_id) VALUES('{0}','{1}')".format(uid, hackathon_id))
-        postcursor.execute("INSERT INTO U_has_S(u_id, s_level, s_id) VALUES('{0}','{1}','{2}')".format(uid, s_level, skill_id))
+            cursor.execute("INSERT INTO H_has_U(u_id, h_id) VALUES('{0}','{1}')".format(uid, hackathon_id))
+        cursor.execute("INSERT INTO U_has_S(u_id, s_level, s_id) VALUES('{0}','{1}','{2}')".format(uid, s_level, skill_id))
         print skill_id
         print s_level
         return render_template('register_skills.html', skills = skillarray)
