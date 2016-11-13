@@ -43,12 +43,15 @@
             <form action="register_skills">
                 <br>
                 <div class="form-group">
-                {% for hackathon in hackathons %}
+                
                     <label for="hackathons">Hackathons This Weekend</label>
+
                     <select class="form-control" id="hackathons">
+                    {% for hackathon in hackathons %}
                         <option>{{hackathon[1]}}</option>
+                        {% endfor %}
                     </select>
-                    {% endfor %}
+                    
                 </div>
 
                 <div class="form-group">
