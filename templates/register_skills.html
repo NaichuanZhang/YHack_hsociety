@@ -42,6 +42,7 @@
 
             <form action="register_skills">
                 <br>
+                {% if hackathons %}
                 <div class="form-group">
                 
                     <label for="hackathons">Hackathons This Weekend</label>
@@ -53,7 +54,7 @@
                     </select>
                     
                 </div>
-
+                {% endif %}
                 <div class="form-group">
 
                     <label for="Skills">Skills</label>
@@ -84,9 +85,12 @@
         </div>
 
     </div>
+    <button type="submit" class="btn btn-primary">Add New Skill</button>
     </form>
+    <button href = "/register_intrests.html" class="btn btn-primary">Next</button>
     </div>
     </div>
+
 
 </body>
 
