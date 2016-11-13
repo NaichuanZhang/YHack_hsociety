@@ -55,7 +55,7 @@
 
 
 <!-- search -->
-   <form class="navbar-form right" role="search">
+   <form class="navbar-form pull-right" role="search">
     <div class="input-group add-on">
      <select class="form-control" name="hackathon_id" id="hackathons">
     	{% for skill in skills %}
@@ -96,9 +96,9 @@
 	     <div class="well">	
 	     {% for user in users %}
 	   		<p>Skills</p>
-	   		{% for user_skills in user_skills %}
+	   		{% for user_skill in user_skills %}
 
-	   		<h2>{{user_skills[1:10]}}</h2>
+	   		<ul>{{user_skills[1:10]}}</ul>
 
 	   	 </div>
     	</div>
@@ -121,8 +121,9 @@
 	</div>
 </div>
 
+<br>
 <hr class="divider"></hr>
-
+<br>
 <div class="container text-center">
   <div class="row">
 
@@ -148,10 +149,11 @@
 
     	<div class="col-sm-4">
 	     <div class="well">	
-	     {% for user in users %}
+	      {% for user in users %}
 	   		<p>Skills</p>
-	   		{% for user_skills in user_skills %}\
-	   		<h2>{{user_skills[1:10]}}</h2>
+	   		{% for user_skill in user_skills %}
+
+	   		<ul>{{user_skills[1:10]}}</ul>
 
 	   	 </div>
     	</div>
