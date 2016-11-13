@@ -192,17 +192,12 @@ def register():
 
 @app.route("/register", methods=['POST'])
 def register_user():
-    try:
-        u_fname=request.form.get('u_fname')
-        u_lname=request.form.get('u_lname')
-        email=request.form.get('email')
-        password=request.form.get('password')
-        year_of_grad=request.form.get('year_of_grad')
-        education=request.form.get('education')
-
-    except:
-        print "couldn't find all tokens" #this prints to shell, end users will not see this (all print statements go to shell)
-        return flask.redirect(flask.url_for('register'))
+    u_fname=request.form.get('u_fname')
+    u_lname=request.form.get('u_lname')
+    email=request.form.get('email')
+    password=request.form.get('password')
+    year_of_grad=request.form.get('year_of_grad')
+    education=request.form.get('education')
     cursor = conn.cursor()
     test =  isEmailUnique(email)
     if test:
@@ -229,31 +224,46 @@ def getHackathon_id(hackathon_name):
 @app.route("/register_skills", methods=['GET','POST'])
 @flask_login.login_required
 def register_skills():
-    skillarray = []
-    hackathonarray = []
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Skills")
-    for x in cursor:
-        skillarray.append(x)
-    cursor.execute("SELECT * FROM Hackathons")
-    for y in cursor:
-        hackathonarray.append(y)
     if request.method == 'POST':
+        skillarray = []
+        hackathonarray = []
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Skills")
+        for x in cursor:
+            skillarray.append(x)
+        cursor.execute("SELECT * FROM Hackathons")
+        for y in cursor:
+            hackathonarray.append(y)
         uid = getUserIdFromEmail(flask_login.current_user.id)
         array = request.form.get('radiobutton')
         skill_id = request.form.get('radiobutton')[1]
         s_level = request.form.get('radiobutton')[3]
         s_level = int(s_level)
         skill_id = int(skill_id)
-        if request.form.get('hackathon_id') != None:
+        print uid
+        newcursor=conn.cursor()
+        if request.form.get('hackathon_id') != None and (isHackUnique(uid,int(getHackathon_id(request.form.get('hackathon_id'))))):
             hackathon_id = int(getHackathon_id(request.form.get('hackathon_id')))
-            cursor.execute("INSERT INTO H_has_U(u_id, h_id) VALUES('{0}','{1}')".format(uid, hackathon_id))
-        cursor.execute("INSERT INTO U_has_S(u_id, s_level, s_id) VALUES('{0}','{1}','{2}')".format(uid, s_level, skill_id))
+            newcursor.execute("INSERT INTO H_has_U(u_id, h_id) VALUES('{0}','{1}')".format(uid, hackathon_id))
+        if isSkillUnique(skill_id,uid):
+            newcursor.execute("INSERT INTO U_has_S(u_id, s_level, s_id) VALUES('{0}','{1}','{2}')".format(uid, s_level, skill_id))
+        conn.commit()
         print skill_id
         print s_level
         return render_template('register_skills.html', skills = skillarray)
     else:
+        uid = getUserIdFromEmail(flask_login.current_user.id)
+        skillarray = []
+        hackathonarray = []
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Skills")
+        for x in cursor:
+            skillarray.append(x)
+        cursor.execute("SELECT * FROM Hackathons")
+        for y in cursor:
+            hackathonarray.append(y)
         print skillarray
+        print uid
         return render_template('register_skills.html', skills = skillarray, hackathons = hackathonarray)
 
 
@@ -274,8 +284,22 @@ def isEmailUnique(email):
         return True
 #end login code
 
-
-
+def isSkillUnique(skill_id,uid):
+    #use this to check if a email has already been registered
+    cursor = conn.cursor()
+    if cursor.execute("SELECT *  FROM U_has_S WHERE s_id = '{0}' and u_id = '{1}'".format(skill_id,uid)):
+        #this means there are greater than zero entries with that email
+        return False
+    else:
+        return True
+def isHackUnique(user_id, hackathon_id):
+    #use this to check if a email has already been registered
+    cursor = conn.cursor()
+    if cursor.execute("SELECT *  FROM H_has_U WHERE h_id = '{0}' and u_id = '{1}'".format(hackathon_id,user_id)):
+        #this means there are greater than zero entries with that email
+        return False
+    else:
+        return True
 
 @app.route('/')
 def home():
