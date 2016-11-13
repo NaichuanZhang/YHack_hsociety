@@ -28,6 +28,12 @@
 		font-family: 'Roboto', serif;
         font-size: 14px;
         font-weight: bold;
+        text-decoration: underline;
+	}
+
+	h2 { 
+		font-family: 'Roboto', serif;
+        font-size: 20px;
 	}
 
   </style>
@@ -36,7 +42,7 @@
 <!--- Header -->
   	<div class="jumbotron text-center">
   		<h1>hacksociety</h1>
-  		<p>Hackathon Profile</p>
+  		<h2>Hackathon Profile</h2>
   		{% if message %}
    	 	<h4>{{message}}</h4> {% endif %}
 	    <ul class="nav pull-right">
@@ -49,13 +55,18 @@
 
 
 <!-- search -->
-   <form class="navbar-form" role="search">
+   <form class="navbar-form right" role="search">
     <div class="input-group add-on">
-      <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+     <select class="form-control" name="hackathon_id" id="hackathons">
+    	{% for skill in skills %}
+      	<option class="form-control" placeholder="Select Skill to Search" name="srch-term" id="srch-term" type="text"> {{skill[1]}} </option>
+      	{% endfor %}
+      	</select>
       <div class="input-group-btn">
         <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
       </div>
     </div>
+      
     </form>
 
 <div class="container text-center">
@@ -63,50 +74,87 @@
 
     <div class="col-sm-3">
       <div class="well">
-        <p>My Profile</p>
+        <p>{{u_fname }} {{u_lname}}</p>
         <img src="{{ user_picture_url }}" class="img-rounded" height="100" width="100" alt="profilepic">
-        <h1>{{ user_name }}</h1>
+        
         {% endif %}
         </div>
         <br>
-		<div class="well">
-	        <p>Interests</p>
-	        <p>
+	    </div>
+	    <div class="col-sm-3">
+	     <div class="well">
+
+	   		<p>Hackathon you are attending this Weekend</p>
+	   		{% for hackathon in hackathons %}
+                <h2>{{hackathon[1]}}</h2>
+            {% endfor %}
+
+	   	 </div>
+    	</div>
+
+    	<div class="col-sm-3">
+	     <div class="well">	
+	     {% for user in users %}
+	   		<p>Skills</p>
+	   		{% for user_skills in user_skills %}
+
+	   		<h2>{{user_skills[1:10]}}</h2>
+
+	   	 </div>
+    	</div>
+
+    	<div class="col-sm-3">
+	     <div class="well">
+	   		<p>Interests</p>
+	   		<h5>
 	          <span class="label label-default">Virtual Reality</span>
 	          <span class="label label-primary">Mobile Dev</span>
 	          <span class="label label-success">Web Dev</span>
 	          <span class="label label-info">Data Analytics</span>
 	          <span class="label label-warning">IoT</span>
 	          <span class="label label-danger">Hardware</span>
-	        </p>
-	      </div>
+	        </h5>
+
+	   	 </div>
+    	</div>
+
+	</div>
+</div>
+
+<hr class="divider"></hr>
+
+<div class="container text-center">
+  <div class="row">
+
+    <div class="col-sm-4">
+      <div class="well">
+        <p>{{u_fname }} {{u_lname}}</p>
+        <img src="{{ user_picture_url }}" class="img-rounded" height="100" width="100" alt="profilepic">
+        
+        {% endif %}
+        </div>
+        <br>
 	    </div>
 	    <div class="col-sm-4">
 	     <div class="well">
 
-	   		<p>My Hackathon Experience</p>
+	   		<p>Hackathon Attendance</p>
+	   		{% for hackathon in hackathons %}
+                <h2>{{hackathon[1]}}</h2>
+            {% endfor %}
 
 	   	 </div>
     	</div>
 
-    	<div class="col-sm-5">
-	     <div class="well">
-
+    	<div class="col-sm-4">
+	     <div class="well">	
+	     {% for user in users %}
 	   		<p>Skills</p>
+	   		{% for user_skills in user_skills %}\
+	   		<h2>{{user_skills[1:10]}}</h2>
 
 	   	 </div>
     	</div>
-	</div>
-</div>
-
-<div class="container ">
-	<p>Hackathon This Weekend</p>
-
-	<select class="form-control" id="sel2">
-		 <option>Y-Hack at Yale</option>
-		 <option>Hack Princeton</option>
-	</select>
-</div>
 
 
   </body>
