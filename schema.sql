@@ -61,3 +61,19 @@ CREATE TABLE U_has_I(
   FOREIGN KEY(u_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY(i_id) REFERENCES Interests(interest_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+INSERT INTO Skills(skill_name) VALUES ('JavaScript');
+INSERT INTO Skills(skill_name) VALUES ('Java');
+INSERT INTO Skills(skill_name) VALUES ('PHP');
+INSERT INTO Skills(skill_name) VALUES ('Python');
+INSERT INTO Skills(skill_name) VALUES ('C++');
+INSERT INTO Skills(skill_name) VALUES ('C');
+INSERT INTO Skills(skill_name) VALUES ('Ruby');
+INSERT INTO Skills(skill_name) VALUES ('Swift');
+INSERT INTO Skills(skill_name) VALUES ('HTML/CSS');
+INSERT INTO Skills(skill_name) VALUES ('Ruby On Rails');
+INSERT INTO Skills(skill_name) VALUES ('Node.js');
+INSERT INTO Skills(skill_name) VALUES ('Flask');
+INSERT INTO Skills(skill_name) VALUES ('Angular');
+INSERT INTO Skills(skill_name) VALUES ('Objective C');
+INSERT INTO Skills(skill_name) VALUES ('R');
