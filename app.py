@@ -71,8 +71,8 @@ def facebook_authorized(resp):
     session['facebook_token'] = (resp['access_token'], '')
     return redirect(next_url)
 
-@app.route("/logout")
-def logout():
+@app.route("/logout_facebook")
+def logout_facebook():
     pop_login_session()
     return render_template('index.html', message="Logged out")
 
@@ -120,7 +120,7 @@ users = cursor.fetchall()
 def getUserList():
     cursor = conn.cursor()
     cursor.execute("SELECT email from Users")
-return cursor.fetchall()
+    return cursor.fetchall()
 
 class User(flask_login.UserMixin):
     pass
@@ -132,7 +132,7 @@ def user_loader(email):
         return
     user = User()
     user.id = email
-return user
+    return user
 
 @login_manager.request_loader
 def request_loader(request):
@@ -147,8 +147,7 @@ def request_loader(request):
     data = cursor.fetchall()
     pwd = str(data[0][0] )
     user.is_authenticated = request.form['password'] == pwd
-return user
-
+    return user
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -159,7 +158,7 @@ def login():
                 <input type='password' name='password' id='password' placeholder='password'></input>
                 <input type='submit' name='submit'></input>
                </form></br>
-	       <a href='/'>Home</a>
+           <a href='/'>Home</a>
                '''
     #The request method is POST (page is recieving data)
     email = flask.request.form['email']
@@ -181,12 +180,13 @@ def login():
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
-    return render_template('hello.html', message='Logged out')
+    return render_template('signin.html')
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
-return render_template('unauth.html')
+    return render_template('unauth.html')
 
+#you can specify specific methods (GET/POST) in function header instead of inside the functions as seen earlier
 @app.route("/register", methods=['GET'])
 def register():
     return render_template('register.html', supress='True')
@@ -211,14 +211,12 @@ def register_user():
         return render_template('hello.html', name=email, message='Account Created!')
     else:
         print "couldn't find all tokens"
-return flask.redirect(flask.url_for('register'))
-
+        return flask.redirect(flask.url_for('register'))
 
 def getUserIdFromEmail(email):
     cursor = conn.cursor()
     cursor.execute("SELECT user_id  FROM Users WHERE email = '{0}'".format(email))
-return cursor.fetchone()[0]
-
+    return cursor.fetchone()[0]
 
 def isEmailUnique(email):
     #use this to check if a email has already been registered
@@ -227,17 +225,15 @@ def isEmailUnique(email):
         #this means there are greater than zero entries with that email
         return False
     else:
-return True
-
-
-
+        return True
+#end login code
 
 
 
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('homepage.html')
 
 @app.route('/logged_in')
 def welcome():
