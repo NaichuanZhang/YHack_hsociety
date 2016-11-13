@@ -218,6 +218,23 @@ def register_user():
         print "couldn't find all tokens"
         return flask.redirect(flask.url_for('register'))
 
+@app.route("/register_skills", methods=['GET','POST'])
+@flask_login.login_required
+def register_skills():
+    skillarray = []
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Skills")
+    for x in cursor:
+        skillarray.append(x)
+    if request.method == 'POST':
+        uid = getUserIdFromEmail(flask_login.current_user.id)
+    else:
+        print skillarray
+        return render_template('register_skills.html', skills = skillarray)
+
+
+
+
 def getUserIdFromEmail(email):
     cursor = conn.cursor()
     cursor.execute("SELECT user_id  FROM Users WHERE email = '{0}'".format(email))
