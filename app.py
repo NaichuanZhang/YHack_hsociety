@@ -164,8 +164,13 @@ def login():
             user = User()
             user.id = email
             flask_login.login_user(user) #okay login in user
-            return flask.redirect(flask.url_for('protected')) #protected is a function defined in this file
-
+            uid = getUserIdFromEmail(flask_login.current_user.id)
+            allUser = getAllUserName()
+            skillarray = getSkillarray()
+            print allUser
+            print skillarray
+            print getHackFromUser()
+            return render_template('index.html', message = "Welcome", skills = getSkillarray(), user_skills = getUserSkill(), hackathons = getHackFromUser() , names = getAllUserName(), user_name = getUserName())
     #information did not match
     return "<a href='/login'>Try again</a>\
             </br><a href='/register'>or make an account</a>"
@@ -207,7 +212,7 @@ def register_user():
         user = User()
         user.id = email
         flask_login.login_user(user)
-        return render_template('index.html', name=u_fname + u_lname, message='Account Created!')
+        return flask.redirect(flask.url_for('register_skills'))
     else:
         print "couldn't find all tokens"
         return flask.redirect(flask.url_for('register'))
@@ -301,6 +306,39 @@ def isHackUnique(user_id, hackathon_id):
     else:
         return True
 
+def getAllUserName():
+    userarray = []
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Users")
+    for x in cursor:
+        userarray.append(x[1] +" " + x[2])
+    return userarray
+def getUserName():
+    uid = getUserIdFromEmail(flask_login.current_user.id)
+    resultarrary = []
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Users WHERE user_id = '{0}'".format(uid))
+    for x in cursor:
+        resultarrary.append(x[1] +" " + x[2])
+    return resultarrary
+
+def getUserFromHack(hackathon_id):
+    hackuserarray=[]
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Users, H_has_U WHERE H_has_U.h_id = '{0}'".format(hackathon_id))
+    for x in cursor:
+        hackuserarray.append(x)
+    return hackuserarray
+
+def getHackFromUser():
+    uid = getUserFromHack(flask_login.current_user.id)
+    userhackarray = []
+    cursor = conn.cursor()
+    cursor.execute("SELECT Hackathons.hackathon_name FROM H_has_U, Hackathons WHERE H_has_U.u_id = 1 and H_has_U.h_id = Hackathons.hackathon_id")
+    for x in cursor:
+        userhackarray.append(x)
+    return userhackarray
+
 @app.route('/')
 def home():
     return render_template('homepage.html')
@@ -310,7 +348,43 @@ def welcome():
     return render_template('index.html', message = 'Welcome to hsociety', user_name = get_facebook_name(), user_picture_url = get_facebook_profile_url())
 
 
+def getSkillarray():
+    skillarray=[]
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Skills")
+    for x in cursor:
+        skillarray.append(x[1])
+    return skillarray
 
+@app.route('/test')
+@flask_login.login_required
+def show_all_users():
+    uid = getUserIdFromEmail(flask_login.current_user.id)
+    allUser = getAllUserName()
+    skillarray = getSkillarray()
+    print allUser
+    print skillarray
+    print getHackFromUser()
+    return render_template('index.html', message = "Welcome", skills = getSkillarray(), user_skills = getUserSkill(), hackathons = getHackFromUser() , names = getAllUserName(), user_name = getUserName())
+
+def getUserSkill():
+    uid = getUserIdFromEmail(flask_login.current_user.id)
+    resultarrary = []
+    cursor = conn.cursor()
+    cursor.execute("SELECT Skills.skill_name FROM U_has_S, Skills WHERE U_has_S.u_id = '{0}' and U_has_S.s_id = Skills.skill_id".format(uid))
+    for x in cursor:
+        resultarrary.append(x)
+    return resultarrary
+
+
+def search_by_skills(skill_name):
+    skill_id = getSkill_id(skill_name)
+    resultusername = []
+    cursor = conn.cursor()
+    cursor.execute("SELECT Users.u_fname, Users.u_lname FROM U_has_S, Users WHERE U_has_S.s_id = '{0}' and U_has_S.u_id = Users.user_id".format(skill_id))
+    for x in cursor:
+        resultusername.append(x[0] + x[1])
+    return resultusername
 
 
 if __name__ == "__main__":
