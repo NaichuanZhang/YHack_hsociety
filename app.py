@@ -218,19 +218,46 @@ def register_user():
         print "couldn't find all tokens"
         return flask.redirect(flask.url_for('register'))
 
+def getSkill_id(skill_name):
+    cursor = conn.cursor()
+    cursor.execute("SELECT skill_id FROM Skills WHERE skill_name ='{0}'".format(skill_name))
+    return cursor.fetchall()[0]
+def getHackathon_id(hackathon_name):
+    cursor = conn.cursor()
+    cursor.execute("SELECT hackathon_id FROM Hackathons WHERE hackathon_name ='{0}'".format(hackathon_name))
+    return cursor.fetchall()[0][0]
+
 @app.route("/register_skills", methods=['GET','POST'])
 @flask_login.login_required
 def register_skills():
     skillarray = []
+    hackathonarray = []
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Skills")
     for x in cursor:
         skillarray.append(x)
+    newcursor = conn.cursor()
+    newcursor.execute("SELECT * FROM Hackathons")
+    for y in newcursor:
+        hackathonarray.append(y)
     if request.method == 'POST':
         uid = getUserIdFromEmail(flask_login.current_user.id)
+        array = request.form.get('radiobutton')
+        skill_id = request.form.get('radiobutton')[1]
+        s_level = request.form.get('radiobutton')[3]
+        s_level = int(s_level)
+        skill_id = int(skill_id)
+        postcursor = conn.cursor()
+        if request.form.get('hackathon_id') != None:
+            hackathon_id = int(getHackathon_id(request.form.get('hackathon_id')))
+            postcursor.execute("INSERT INTO H_has_U(u_id, h_id) VALUES('{0}','{1}')".format(uid, hackathon_id))
+        postcursor.execute("INSERT INTO U_has_S(u_id, s_level, s_id) VALUES('{0}','{1}','{2}')".format(uid, s_level, skill_id))
+        print skill_id
+        print s_level
+        return render_template('register_skills.html', skills = skillarray)
     else:
         print skillarray
-        return render_template('register_skills.html', skills = skillarray)
+        return render_template('register_skills.html', skills = skillarray, hackathons = hackathonarray)
 
 
 

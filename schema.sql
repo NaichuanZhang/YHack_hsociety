@@ -82,3 +82,8 @@ INSERT INTO Skills(skill_name) VALUES ('Flask');
 INSERT INTO Skills(skill_name) VALUES ('Angular');
 INSERT INTO Skills(skill_name) VALUES ('Objective C');
 INSERT INTO Skills(skill_name) VALUES ('R');
+
+INSERT INTO Hackathons(hackathon_name) VALUES ('Yhack');
+INSERT INTO Hackathons(hackathon_name) VALUES ('HackPrinceton');
+INSERT INTO Hackathons(hackathon_name) VALUES ('Hackital');
+INSERT INTO Hackathons(hackathon_name) VALUES ('HackTheU');
